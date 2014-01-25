@@ -10,7 +10,7 @@
   "dependencies": {
     "async": "0.2.9",
     "request": "2.30.0"
-  }
+  },
   "keywords": [
     "neo4j",
     "json",
