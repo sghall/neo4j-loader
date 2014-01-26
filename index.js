@@ -43,7 +43,7 @@ exports.addToQueue = function (relation) {
   q.push(relation);
 };
 
-exports.insert = function (inputFile, url) {
+exports.insertFile = function (inputFile, url) {
   if (url) {
     dataURL = url;
   }

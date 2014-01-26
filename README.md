@@ -15,7 +15,7 @@ npm install neo4j-loader
 
 **API**
 
-There are only three methods to the API, so it is very easy to use.  Basically, you can use it to load data from a JSON file or in the context of a larger script - sending each realtionship to the queue manually.
+There are only three methods to the API (fromFile, setURL, addToQueue), so it is very easy to use.  Basically, you can use it to load data from a JSON file or in the context of a larger script - sending each realtionship to the queue manually.
 
 ***Loading from a JSON file***
 
@@ -26,7 +26,7 @@ var loader = require("neo4j-loader");
 var inputFile = 'data/relationships.json';
 var dataURL = 'http://localhost:7474/db/data/';
 
-loader.insert(inputFile, dataURL);
+loader.fromFile(inputFile, dataURL);
 ```
 
 ***Add Each to Queue Manually***
