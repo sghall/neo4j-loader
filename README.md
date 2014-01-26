@@ -20,7 +20,6 @@ There are only three methods to the API (insertFile, setURL, addToQueue), so it 
 ***Loading from a JSON file***
 
 ```javascript
-var fs = require('fs');
 var loader = require("neo4j-loader");
 
 var inputFile = 'data/relationships.json';
