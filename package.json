@@ -1,6 +1,6 @@
 {
   "name": "neo4j-loader",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "A simple node module for loading data from a json file to neo4j",
   "main": "index.js",
   "repository": {
