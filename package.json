@@ -1,6 +1,6 @@
 {
   "name": "neo4j-loader",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple node module for loading data from a json file to neo4j",
   "main": "index.js",
   "repository": {
@@ -20,7 +20,6 @@
   "author": "Steve Hall <hall.steven.g@gmail.com> (http://delimited.io/)",
   "license": "BSD",
   "readmeFilename": "README.md",
-  "gitHead": "122b04523d5312cce12384f7e0388390607dba35",
   "bugs": {
     "url": "https://github.com/sghall/neo4j-loader/issues"
   }

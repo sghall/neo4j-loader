@@ -3,8 +3,19 @@ var fs =      require('fs'),
     request = require('request');
 
 var dataURL = '';
+// **************************************************************************************
+// Set up an async queue to hold all the relationships that need to be run.
+// **************************************************************************************
 var q = async.queue(runTask, 1); // You will duplicate nodes if you change the "1" here!
 
+q.drain = function() { console.log('Finished.'); };
+
+// **************************************************************************************
+// Each queued task starts here and does the follwowing:
+// 1.  Check to see if a relationship exists betwen the two nodes with that type.
+// 2.  If the realtionship exists, it simply console logs, "EXISTS..."
+// 3.  If not, the relationship data goes to the createRelation function.
+// **************************************************************************************
 function runTask(d, callback) {
   checkRelationExists(d, function (err, exists) {
     if (err) throw err;
@@ -21,10 +32,21 @@ function runTask(d, callback) {
   });
 }
 
-q.drain = function() { console.log('Finished.'); };
+// **************************************************************************************
+// EXPORTED METHODS
+// **************************************************************************************
+exports.setURL = function (url) {
+  dataURL = url;
+};
+
+exports.addToQueue = function (relation) {
+  q.push(relation);
+};
 
 exports.insert = function (inputFile, url) {
-  dataURL = url;
+  if (url) {
+    dataURL = url;
+  }
   fs.readFile(inputFile, 'utf-8', function (err, data) {
     if (err) throw err;
     var relations = JSON.parse(data);
@@ -34,6 +56,9 @@ exports.insert = function (inputFile, url) {
   });
 }
 
+// **************************************************************************************
+// Look for a relationship of type = d.type between the two nodes.
+// **************************************************************************************
 function checkRelationExists(d, callback) {
   var options = getOptions(d, 'REL_MATCH');
   request.post(options, function (err, response, body) {
@@ -41,11 +66,15 @@ function checkRelationExists(d, callback) {
     if (response.statusCode === 200) {
       return callback(null, body.data[0] == null ? false: true);
     } else {
-      return callback(new Error("EXISTS: " + options.body.query));
+      return callback(new Error('REL_MATCH: ' + options.body.query));
     }
   });
 }
 
+// **************************************************************************************
+// If a realtionship needs to be created, first get the nodeIDs, creating the
+// nodes if need be, and returning the nodesIds.
+// **************************************************************************************
 function createRelation(data, cb) {
   async.waterfall([
     function (callback) {
@@ -61,13 +90,16 @@ function createRelation(data, cb) {
         if (response.statusCode === 201) {
           return callback(null);
         } else {
-          return callback(new Error('RELATE: '+ response.body.message ));
+          return callback(new Error('REL_CREATE: ' + response.body.message ));
         }
       });
     },
   ], cb);
 }
 
+// **************************************************************************************
+// Retrieve the nodeIDs for the source and target in parallel.
+// **************************************************************************************
 function getNodeIDs(data, cb) {
   async.parallel([
     function (callback){
@@ -85,6 +117,11 @@ function getNodeIDs(data, cb) {
   ], cb);
 }
 
+// **************************************************************************************
+// Query the db to see if a node exists...
+// If it does, retturn the ID.
+// If it does not exist, create it an return the ID.
+// **************************************************************************************
 function queryNode(data, cb) {
   var options;
   async.waterfall([
@@ -95,7 +132,7 @@ function queryNode(data, cb) {
         if (body.data != undefined && response.statusCode === 200) {
           return callback(null, body.data);
         } else {
-          return callback(new Error('FIND: '+ response.body.message));
+          return callback(new Error('NODE_MATCH: ' + response.body.message));
         }
       });
     },
@@ -109,7 +146,7 @@ function queryNode(data, cb) {
           if (body.data[0] != undefined && response.statusCode === 200) {
             return callback(null, body.data[0]);
           } else {
-            return callback(new Error('CREATE: '+ response.body.message));
+            return callback(new Error('NODE_CREATE: ' + response.body.message));
           }
         });
       }
@@ -117,11 +154,15 @@ function queryNode(data, cb) {
    ], cb);
 }
 
-function getOptions(d, type) {
+// **************************************************************************************
+// A function with a swtich statement to set up the headers and body of the requests 
+// for each type of query that needs to be made.
+// **************************************************************************************
+function getOptions(d, queryType) {
   var headers = {'accept': 'application/json; charset=UTF-8'};
   var query, options = { url: dataURL + "cypher", headers: headers, json: true };
 
-  switch(type) {
+  switch(queryType) {
     case 'NODE_MATCH':
       query = "MATCH (a {uniq:'" + d + "'}) RETURN id(a)";
       options.body = {query: query, params : {} };
