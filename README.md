@@ -1,4 +1,4 @@
-**Neo4j Data Loader**
+<h2>Neo4j Data Loader</h2>
 
 A simple Node module to quickly load smalller datasets into Neo4j for analysis in the their browser application.
 
@@ -10,7 +10,7 @@ Dependencies:
 **Installation**
 
 ```javascript
-node install neo4j-loader
+npm install neo4j-loader
 ```
 
 **API**
@@ -23,7 +23,7 @@ There are only three methods to the API, so it is very easy to use.  Basically, 
 var fs = require('fs');
 var loader = require("neo4j-loader");
 
-var inputFile = 'data/recipe-relations.json';
+var inputFile = 'data/relationships.json';
 var dataURL = 'http://localhost:7474/db/data/';
 
 loader.insert(inputFile, dataURL);
@@ -35,6 +35,8 @@ loader.insert(inputFile, dataURL);
 var fs = require('fs');
 var loader = require("neo4j-loader");
 
+var inputFile = 'data/relationships.json';
+var dataURL = 'http://localhost:7474/db/data/';
 
 // Make sure you set the URL first.
 loader.setURL(dataURL); 
@@ -47,4 +49,8 @@ fs.readFile(inputFile, 'utf-8', function (err, data) {
   });
 });
 ```
+
+<img src="neo4j-loader.jpg" />
+
+
 
