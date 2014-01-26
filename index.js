@@ -119,7 +119,7 @@ function getNodeIDs(data, cb) {
 
 // **************************************************************************************
 // Query the db to see if a node exists...
-// If it does, retturn the ID.
+// If it does, return the ID.
 // If it does not exist, create it an return the ID.
 // **************************************************************************************
 function queryNode(data, cb) {
