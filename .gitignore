@@ -1,4 +1,5 @@
 .DS_Store
+.gitignore
 scripts/
 node_modules/
 resources/
