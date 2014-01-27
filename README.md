@@ -15,7 +15,7 @@ npm install neo4j-loader
 
 **The Basic Idea**
 
-If you want to create a graph made up of nodes and relationships with no hanging nodes (nodes that are not connected to any other node) you can cycle over all the relationships and be assured to see all the nodes that exist in the graph.  With that, you can construct the entire graph by passing in objects representing each of the relationships that look like this:
+If you want to create a graph made up of nodes and relationships with no hanging nodes (nodes that are not connected to any other node) you can cycle over all the relationships and be assured to see all the nodes that exist in the graph.  With that in mind, using this module you can construct the entire graph by passing in objects representing each of the relationships that look like this:
 
 ```javascript
 {
