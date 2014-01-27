@@ -45,7 +45,7 @@ Beyond that, you can have as many properties as you want in the relationship dat
 
 **API**
 
-There are only three methods to the API (insertFile, setURL, addToQueue), so it is very easy to use.  Basically, you can use it to load data from a JSON file or in the context of a larger script - sending each realtionship to the queue manually.
+There are only three methods to the API (insertFile, setURL, addToQueue), so it is very easy to use.  Basically, you can use it to load data from a JSON file or in the context of a larger script - sending each realtionship to the queue manually. The module will begin processing items in the queue immediately upon receiving them.
 
 ***Loading from a JSON file***
 
